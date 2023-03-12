@@ -1,5 +1,6 @@
 import sys
 from pizza_full_database import incoming_pizza_order_database 
+from PyQt5.QtWidgets import QMessageBox, QDesktopWidget
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -10,6 +11,10 @@ class Uİ_pizza_sepet(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1045, 825)
+        qr = MainWindow.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        MainWindow.move(qr.topLeft())
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -123,17 +128,26 @@ class Uİ_pizza_sepet(object):
 
     def card_puchase_open_window(self,Mainwindow,order_details,total):
         from card_purchase import Ui_CardPurchasewindow
-        with open("currentcustomer.txt","a") as file:
-            file.write(order_details)
+        if order_details:
+            with open("currentcustomer.txt","a") as file:
+                file.write(order_details)
 
-        with open("currentcustomer.txt","a") as file:
-            file.write("\n")
-            file.write(f"{total}")
-        self.window=QtWidgets.QMainWindow()
-        self.ui=Ui_CardPurchasewindow()
-        self.ui.setupUi(self.window)
-        Mainwindow.hide()
-        self.window.show()
+            with open("currentcustomer.txt","a") as file:
+                file.write("\n")
+                file.write(f"{total}")
+            self.window=QtWidgets.QMainWindow()
+            self.ui=Ui_CardPurchasewindow()
+            self.ui.setupUi(self.window)
+            Mainwindow.hide()
+            self.window.show()
+        else:
+            self.message_box_check_all_find("Cart is Empty!",Mainwindow)
+        
+    def message_box_check_all_find(self,error,MainWindow):
+        dialog=QMessageBox(MainWindow)
+        dialog.setText(error)
+        dialog.setWindowTitle("error")
+        dialog.exec_()
 
 
     def select_delete_pizza(self,Mainwindow):
