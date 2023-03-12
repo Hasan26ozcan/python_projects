@@ -3,13 +3,17 @@ from datetime import datetime
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pizza_full_database import add_credi_card
 from receipt import Ui_Receiptwindow
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QDesktopWidget
 
 class Ui_CardPurchasewindow(object):
     def setupUi(self, MainWindow):
         self.addcredicard=add_credi_card()
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(468, 250)
+        qr = MainWindow.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        MainWindow.move(qr.topLeft())
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.formLayout = QtWidgets.QFormLayout(self.centralwidget)

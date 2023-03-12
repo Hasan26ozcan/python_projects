@@ -1,5 +1,5 @@
 import re
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QDesktopWidget
 from PyQt5 import QtCore, QtWidgets
 from pizza_full_database import Customer_Database
 
@@ -8,6 +8,10 @@ class Ui_forgetmypassword(object):
         self.data_password_update=Customer_Database()
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(720, 467)
+        qr = MainWindow.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        MainWindow.move(qr.topLeft())
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -99,9 +103,7 @@ class Ui_forgetmypassword(object):
 
 
 
-    def new_password_control(self):
-        print("bbb")
-        
+    def new_password_control(self):        
         if (self.data_password_update.forget_password_check_func(self.input_personal_number.text(),self.input_e_mail_number.text())!=None):
             if(self.input_new_password_1.text()==self.input_new_password_2.text()):
                 password = self.input_new_password_1.text()
