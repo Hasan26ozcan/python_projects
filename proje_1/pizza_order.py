@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QDesktopWidget
 from pizza_full_database import pizza_Database, addition_Metarial, incoming_pizza_order_database
 
 data1=pizza_Database()
@@ -19,6 +19,10 @@ class Ui_siparis_window(object):
         all_addmade=data2.get_all_addmade()
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1000, 600)
+        qr = MainWindow.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        MainWindow.move(qr.topLeft())
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
