@@ -1,5 +1,5 @@
 import re
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QDesktopWidget
 from PyQt5 import QtCore, QtWidgets
 from validator_collection import validators
 from pizza_full_database import Customer_Database
@@ -9,6 +9,10 @@ class Ui_register_window(object):
         self.database_addiation=Customer_Database()
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(566, 301)
+        qr = MainWindow.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        MainWindow.move(qr.topLeft())
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -72,7 +76,7 @@ class Ui_register_window(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Register Menu"))
         self.password_label.setText(_translate("MainWindow", "Password : "))
         self.name_label.setText(_translate("MainWindow", "Name : "))
         self.email_password.setText(_translate("MainWindow", "E_mail : "))
@@ -143,6 +147,7 @@ class Ui_register_window(object):
                 return True
             else:
                 return errors
+            
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
