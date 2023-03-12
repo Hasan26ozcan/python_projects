@@ -1,6 +1,18 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QDesktopWidget
 from pizza_full_database import Customer_Database, incoming_pizza_order_database
+
+
+def main():
+    import sys
+    set_default_menu()
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_startWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
+
 
 def set_default_menu():
     from pizza_full_database import pizza_Database,addition_Metarial 
@@ -101,6 +113,10 @@ class Ui_startWindow(object):
         self.customerdatabasechecklogin=Customer_Database() 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(442, 317)
+        qr = MainWindow.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        MainWindow.move(qr.topLeft())
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
@@ -155,7 +171,7 @@ class Ui_startWindow(object):
         self.window.show()
 
     def new_forget_my_password(self,Mainwindow):
-        from missing_password import Ui_forgetmypassword
+        from forgot_password import Ui_forgetmypassword
         self.window=QtWidgets.QMainWindow()
         self.ui=Ui_forgetmypassword()
         self.ui.setupUi(self.window)
@@ -163,11 +179,7 @@ class Ui_startWindow(object):
         self.window.show()
 
 
-
-
     def check_login_reading(self, MainWindow):
-        print(self.inputnamelabel.text())
-        print(self.inputpasswordlabel.text())
         try:
             if personal_numb:=self.customerdatabasechecklogin.check_login(self.inputnamelabel.text(),self.inputpasswordlabel.text()):
                 with open("currentcustomer.txt","w") as file:
@@ -175,14 +187,15 @@ class Ui_startWindow(object):
                 self.incoming_pizza_order.all_order_database_delete()
                 self.order_open_window(MainWindow)
         except Exception as e:
-            print(e)
             self.message_box_wrong_password()
+
 
     def message_box_wrong_password(self):
         dialog=QMessageBox()
-        dialog.setText("Wrong Password!")
-        dialog.setWindowTitle("wrong e-mail or password!")
+        dialog.setText("wrong e-mail or password!")
+        dialog.setWindowTitle("Invalid Input")
         dialog.exec_()
+
 
     def order_open_window(self,Mainwindow):
         from pizza_order import Ui_siparis_window
@@ -204,11 +217,4 @@ class Ui_startWindow(object):
 
 
 if __name__ == "__main__":
-    import sys
-    set_default_menu()
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_startWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+    main()
