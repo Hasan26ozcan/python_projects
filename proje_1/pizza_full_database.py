@@ -243,13 +243,19 @@ class incoming_pizza_order_database:
 
 
 createreceiptpizzatable="""CREATE TABLE IF NOT EXISTS receipt_database 
-(id INTEGER PRIMARY KEY,personal_id  TEXT KEY, order_details_pizza_name TEXT NOT NULL, order_details_pizza_add_name TEXT NOT NULL, order_date TEXT NOT NULL);"""
+(id INTEGER PRIMARY KEY,personal_id  TEXT KEY,  order_pizza_pizza_name_add_made TEXT NOT NULL,order_details_pizza_name TEXT NOT NULL, order_details_pizza_add_name TEXT NOT NULL, order_date TEXT NOT NULL,total TEXT NOT NULL);"""
 
-insertreceiptdata = "INSERT OR IGNORE INTO receipt_Database (personal_id,order_details_pizza_name,order_details_pizza_add_name,order_date) VALUES (?, ?, ?, ?);"
+insertreceiptdata = "INSERT OR IGNORE INTO receipt_Database (personal_id,order_pizza_pizza_name_add_made,order_details_pizza_name,order_details_pizza_add_name,order_date,total) VALUES (?, ?, ?, ? ,? ,?);"
 
-Allreceiptpizza = "SELECT * FROM receipt_database;"
+Allreceiptpizza = "SELECT order_pizza_pizza_name_add_made FROM receipt_database;"
 
-deletereceiptpizza= "DELETE * FROM receipt_database WHERE id= ? ;"
+Allreceiptpizzaname = "SELECT order_details_pizza_name FROM receipt_database;"
+
+Allreceiptpizzaaddmade = "SELECT order_details_pizza_add_name FROM receipt_database;"
+
+Allreceiptpizzatotal = "SELECT total FROM receipt_database;"
+
+deletereceiptpizza= "DELETE FROM receipt_database WHERE id= ? ;"
 
 class receipt_pizza_addmade_database:
     def __init__(self) -> None:
@@ -259,12 +265,29 @@ class receipt_pizza_addmade_database:
     def create_tables(self):
         self.cur.execute(createreceiptpizzatable)
 
-    def insert_receipt_pizza(self,personal_id,order_details_pizza_name,order_details_pizza_add_name,order_date):
-        self.cur.execute(insertreceiptdata,(personal_id,order_details_pizza_name,order_details_pizza_add_name,order_date))
+    def insert_receipt_pizza(self,personal_id,order_pizza_pizza_name_add_made,order_details_pizza_name,order_details_pizza_add_name,order_date,total):
+        self.cur.execute(insertreceiptdata,(personal_id,order_pizza_pizza_name_add_made,order_details_pizza_name,order_details_pizza_add_name,order_date,total))
         self.con.commit()
     
+    def all_receipt_pizza_name(self):
+        return self.cur.execute(Allreceiptpizzaname).fetchall()
+    
+    def all_receipt_pizza_name(self):
+        return self.cur.execute(Allreceiptpizzaname).fetchall()
+    
+    def all_receipt_pizza_addmade(self):
+        return self.cur.execute(Allreceiptpizzaaddmade).fetchall()
+        
+    def all_receipt_pizza_total(self):
+        return self.cur.execute(Allreceiptpizzatotal).fetchall()
+        
+
     def all_receipt_pizza(self):
-        return self.cur.execute(Allcartpizza).fetchall()
+        return self.cur.execute(Allreceiptpizza).fetchall()
+    
+    def del_pizza_table(self,id):
+        self.cur.execute(deletereceiptpizza,(id,))
+        self.con.commit()
 
 
 
