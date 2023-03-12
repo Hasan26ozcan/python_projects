@@ -1,6 +1,7 @@
 from datetime import datetime
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pizza_full_database import Customer_Database,receipt_pizza_addmade_database
+
 customer_db = Customer_Database()
 _translate = QtCore.QCoreApplication.translate
 
@@ -55,24 +56,24 @@ class Ui_Receiptwindow(object):
         now_time_line = datetime.now()
         with open("currentcustomer.txt","r") as file:
             personal_numb = file.readline()
-
             purchase_details=file.readlines()
 
         customer_name = customer_db.get_name_by_id(personal_numb[:-1])[0].title()
-
         details = ""
         for detail in purchase_details[:-1]:
             details += detail + "\n"
         stringdatapizzaaddmade=""
         receip_text = ""
+
         for paragb in details.split("$")[:-1]:
             a=paragb+"$"+"\n"
             stringdatapizzaaddmade+=a
             receip_text += f"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Purchase detail: {a} </p>\n"
+
         total = details.split("$")[-1].strip("\n")
         total = round(float(total),2)
         list_of_receipt = stringdatapizzaaddmade.split("\n")
-        print(stringdatapizzaaddmade.split("\n"))
+
         pizza_names = []
         addition_names = []
         for order in list_of_receipt:
@@ -84,17 +85,12 @@ class Ui_Receiptwindow(object):
         for pizzas in pizza_names:
             pizza_names_string += pizzas+"\n"
         addition_names_list = ""
+        
         for addition_list in addition_names:
             for addition in addition_list:
                 addition_names_list += addition+ " "
             addition_names_list += "\n"
             
-        print(pizza_names_string)
-        print(addition_names_list)
-
-        print(pizza_names)
-        print(addition_names)
-        print(stringdatapizzaaddmade)
         self.receip_pizza.insert_receipt_pizza(personal_numb,stringdatapizzaaddmade[2:-1], pizza_names_string ,addition_names_list,now_time_line,total)
 
 
